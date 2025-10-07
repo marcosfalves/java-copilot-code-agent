@@ -37,12 +37,9 @@ body:
       options:
         - Esportes
         - Artes
-        - Música
-        - Ciências
-        - Tecnologia
         - Acadêmico
-        - Social
-        - Outro
+        - Comunidade
+        - Tecnologia
     validations:
       required: true
 

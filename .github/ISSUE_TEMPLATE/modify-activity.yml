@@ -58,12 +58,9 @@ body:
         - Não alterar
         - Esportes
         - Artes
-        - Música
-        - Ciências
-        - Tecnologia
         - Acadêmico
-        - Social
-        - Outro
+        - Comunidade
+        - Tecnologia
 
   - type: checkboxes
     id: new-days
