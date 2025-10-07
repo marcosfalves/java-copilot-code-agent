@@ -1,0 +1,178 @@
+name: ✨ Solicitar Nova Funcionalidade
+description: Sugerir uma nova funcionalidade ou melhoria para o sistema
+title: "[FEATURE] "
+labels: ["enhancement", "feature-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Solicitar Nova Funcionalidade
+        Compartilhe sua ideia para melhorar o sistema de gestão escolar!
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Categoria da Funcionalidade
+      description: Que tipo de funcionalidade você está solicitando?
+      options:
+        - Nova funcionalidade de interface
+        - Novo tipo de relatório
+        - Melhoria de usabilidade
+        - Nova integração
+        - Automação de processo
+        - Melhoria de performance
+        - Nova validação ou regra de negócio
+        - Outra
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Descrição da Funcionalidade
+      description: Descreva claramente a funcionalidade que você está solicitando
+      placeholder: |
+        Exemplo: Gostaria de poder exportar a lista de participantes 
+        de uma atividade em formato Excel ou PDF.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Qual Problema Isso Resolve?
+      description: Explique o problema ou necessidade que motivou esta solicitação
+      placeholder: |
+        Exemplo: Atualmente, preciso copiar manualmente os dados de 
+        participantes para criar relatórios. Isso é demorado e sujeito a erros.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Solução Proposta
+      description: Como você imagina que esta funcionalidade deveria funcionar?
+      placeholder: |
+        Exemplo: Adicionar um botão "Exportar" em cada cartão de atividade. 
+        Ao clicar, o usuário pode escolher entre PDF ou Excel e fazer o download.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-story
+    attributes:
+      label: História de Usuário
+      description: Descreva como um usuário utilizaria esta funcionalidade
+      placeholder: |
+        Como [tipo de usuário], eu quero [fazer algo], para que [objetivo/benefício].
+        
+        Exemplo: Como professor, eu quero exportar listas de participantes, 
+        para que eu possa compartilhar com administradores e manter registros offline.
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      description: Quão importante é esta funcionalidade para você?
+      options:
+        - Crítica (bloqueando trabalho importante)
+        - Alta (muito útil, mas há alternativas)
+        - Média (seria bom ter)
+        - Baixa (não é urgente)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-users
+    attributes:
+      label: Quem se Beneficiaria?
+      description: Que tipo de usuário se beneficiaria desta funcionalidade?
+      options:
+        - Todos os professores
+        - Administradores
+        - Estudantes (através da interface)
+        - Casos específicos
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Critérios de Aceitação
+      description: Como saberemos que esta funcionalidade está completa e funcionando?
+      placeholder: |
+        Exemplo:
+        - [ ] Botão de exportação visível em cada atividade
+        - [ ] Opção de escolher formato (PDF ou Excel)
+        - [ ] Download funciona corretamente
+        - [ ] Arquivo contém todos os dados necessários
+        - [ ] Funciona em todos os navegadores principais
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas Consideradas
+      description: Você considerou outras formas de resolver este problema?
+      placeholder: |
+        Exemplo: Tentei usar a função de imprimir do navegador, 
+        mas não fica formatado adequadamente.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexto Adicional
+      description: Qualquer outra informação relevante
+      placeholder: |
+        Exemplo:
+        - Links para exemplos de outras aplicações
+        - Mockups ou esboços
+        - Requisitos técnicos específicos
+        - Dependências ou integrações necessárias
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Critérios de Aceitação para Implementação
+        - [ ] A funcionalidade deve ser implementada seguindo a Clean Architecture
+        - [ ] Deve incluir validações apropriadas na camada de domínio
+        - [ ] Deve ter testes unitários cobrindo os casos principais
+        - [ ] A interface deve ser responsiva e seguir o design existente
+        - [ ] A documentação deve ser atualizada se necessário
+        - [ ] Não deve quebrar funcionalidades existentes
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Orientações Técnicas para o Agente
+        **Estrutura de implementação:**
+        
+        1. **Camada de Domínio** (se aplicável):
+           - Adicionar novas entidades ou value objects em `domain/entities/` ou `domain/valueobjects/`
+           - Adicionar interfaces de repositório em `domain/repositories/`
+           
+        2. **Camada de Aplicação**:
+           - Criar DTOs em `application/dtos/`
+           - Implementar use cases em `application/usecases/`
+           
+        3. **Camada de Infraestrutura**:
+           - Implementar repositórios em `infrastructure/persistence/`
+           - Adicionar configurações em `infrastructure/config/`
+           
+        4. **Camada de Apresentação**:
+           - Criar/modificar controllers em `presentation/controllers/`
+           - Atualizar frontend em `src/main/resources/static/`
+        
+        **Padrões a seguir:**
+        - Validações devem ocorrer nas entidades de domínio
+        - Use DTOs para comunicação entre camadas
+        - Siga convenções de nomenclatura existentes
+        - Mantenha responsabilidades bem separadas
+        - Adicione tratamento de erros apropriado
+        
+        **Testes:**
+        - Adicionar testes unitários em `src/test/java/`
+        - Seguir padrão de nomenclatura: `shouldDoSomethingWhenCondition()`
+        - Usar Mockito para mocks

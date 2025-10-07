@@ -1,0 +1,207 @@
+name: 🎨 Melhorar Interface do Usuário
+description: Solicitar melhorias visuais ou de usabilidade na interface web
+title: "[UI] "
+labels: ["enhancement", "ui", "frontend"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Melhorar Interface do Usuário
+        Ajude-nos a tornar a interface mais bonita e fácil de usar!
+
+  - type: dropdown
+    id: ui-area
+    attributes:
+      label: Área da Interface
+      description: Qual parte da interface você quer melhorar?
+      options:
+        - Página inicial / Layout geral
+        - Cartões de atividades
+        - Filtros de busca
+        - Modal de login
+        - Modal de inscrição
+        - Cabeçalho / Navegação
+        - Cores e estilo visual
+        - Responsividade mobile
+        - Acessibilidade
+        - Outra
+    validations:
+      required: true
+
+  - type: dropdown
+    id: improvement-type
+    attributes:
+      label: Tipo de Melhoria
+      description: Que tipo de melhoria você está solicitando?
+      options:
+        - Mudança de cores / tema
+        - Mudança de layout
+        - Adicionar ícones ou imagens
+        - Melhorar espaçamento
+        - Melhorar tipografia
+        - Adicionar animações
+        - Melhorar feedback visual
+        - Corrigir problema de responsividade
+        - Melhorar acessibilidade
+        - Outra
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-state
+    attributes:
+      label: Estado Atual
+      description: Descreva como a interface está atualmente
+      placeholder: |
+        Exemplo: Os cartões de atividades têm fundo branco simples 
+        e parecem muito sem vida.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-improvement
+    attributes:
+      label: Melhoria Proposta
+      description: Descreva como você gostaria que a interface ficasse
+      placeholder: |
+        Exemplo: Adicionar gradientes sutis nos cartões baseados na categoria 
+        da atividade. Por exemplo, atividades de Esportes teriam um gradiente azul, 
+        Artes teriam gradiente roxo, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-benefit
+    attributes:
+      label: Benefício para o Usuário
+      description: Como isso melhoraria a experiência do usuário?
+      placeholder: |
+        Exemplo: Tornaria mais fácil identificar visualmente diferentes 
+        tipos de atividades e deixaria o site mais atraente e moderno.
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual-reference
+    attributes:
+      label: Referências Visuais
+      description: Você tem exemplos, links ou imagens de referência?
+      placeholder: |
+        Exemplo: 
+        - Link para site inspiração
+        - Descrição de cores específicas (#3498db, #e74c3c)
+        - Esboço ou mockup (pode anexar imagem)
+
+  - type: checkboxes
+    id: design-aspects
+    attributes:
+      label: Aspectos de Design a Considerar
+      description: Selecione os aspectos que esta melhoria deve abordar
+      options:
+        - label: Consistência visual com o resto do sistema
+        - label: Acessibilidade (contraste, tamanhos de fonte)
+        - label: Responsividade (mobile, tablet, desktop)
+        - label: Performance (animações leves, sem impacto na velocidade)
+        - label: Usabilidade (facilidade de uso)
+        - label: Estética (aparência visual)
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Prioridade
+      description: Quão importante é esta melhoria?
+      options:
+        - Alta (impacta usabilidade significativamente)
+        - Média (melhoria notável)
+        - Baixa (polimento estético)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Notas Adicionais
+      description: Qualquer outra informação relevante
+      placeholder: |
+        Exemplo:
+        - Dispositivos ou navegadores específicos afetados
+        - Problemas de acessibilidade notados
+        - Sugestões de cores específicas
+        - Comportamentos de animação desejados
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Critérios de Aceitação
+        - [ ] A mudança visual deve ser implementada conforme especificado
+        - [ ] O design deve ser responsivo em diferentes tamanhos de tela
+        - [ ] As cores devem ter contraste adequado (acessibilidade WCAG)
+        - [ ] Não deve quebrar o layout existente
+        - [ ] Deve funcionar em Chrome, Firefox, Safari e Edge
+        - [ ] Animações (se houver) devem ser suaves e não impactar performance
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Orientações Técnicas para o Agente
+        **Arquivos principais da interface:**
+        - `src/main/resources/static/index.html` - Estrutura HTML
+        - `src/main/resources/static/styles.css` - Estilos CSS
+        - `src/main/resources/static/app.js` - Lógica JavaScript
+        
+        **Estrutura atual:**
+        - **Header**: Logo e sistema de login
+        - **Filtros**: Barra lateral esquerda com filtros por categoria, dia e horário
+        - **Cartões de atividade**: Grid responsivo com informações da atividade
+        - **Modais**: Login e inscrição
+        
+        **Padrões de design existentes:**
+        - Sistema de cores baseado em categorias de atividades
+        - Layout responsivo com CSS Grid/Flexbox
+        - Modais com overlay
+        - Indicadores visuais de capacidade (barras de progresso)
+        
+        **Boas práticas:**
+        1. **Cores**: Use variáveis CSS para facilitar manutenção
+        ```css
+        :root {
+          --primary-color: #3498db;
+          --secondary-color: #2ecc71;
+          --danger-color: #e74c3c;
+        }
+        ```
+        
+        2. **Responsividade**: Use media queries
+        ```css
+        @media (max-width: 768px) {
+          .activity-card { ... }
+        }
+        ```
+        
+        3. **Acessibilidade**:
+        - Contraste mínimo de 4.5:1 para texto
+        - Tamanhos de fonte legíveis (mínimo 16px)
+        - Labels e alt text apropriados
+        - Foco visível em elementos interativos
+        
+        4. **Performance**:
+        - Evitar animações pesadas
+        - Usar CSS transforms para animações (GPU-accelerated)
+        - Otimizar imagens
+        
+        **Integração com backend:**
+        - Dados de tipo de atividade vêm do backend (ActivityTypeDTO)
+        - Cores podem ser definidas no frontend ou backend
+        - Mantém consistência entre dados e apresentação
+        
+        **Exemplo de modificação de cores:**
+        ```javascript
+        // Em app.js, na função renderActivityCard
+        const typeInfo = {
+          label: details.type.label,
+          color: details.type.color,  // Vem do backend
+          textColor: details.type.textColor
+        };
+        ```
