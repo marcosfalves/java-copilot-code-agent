@@ -1,0 +1,168 @@
+name: ✏️ Modificar Atividade Existente
+description: Solicitar alterações em uma atividade existente no sistema
+title: "[MODIFICAR] "
+labels: ["enhancement", "activity", "modification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Modificar uma Atividade Existente
+        Use este formulário para solicitar mudanças em uma atividade já cadastrada.
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade Atual
+      description: Qual atividade você deseja modificar?
+      placeholder: ex. Chess Club, Art Club, Drama Club
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: fields-to-modify
+    attributes:
+      label: Quais campos devem ser modificados?
+      description: Selecione todos os campos que precisam de alteração
+      options:
+        - label: Nome da atividade
+        - label: Descrição
+        - label: Categoria/Tipo
+        - label: Dias da semana
+        - label: Horário de início
+        - label: Horário de término
+        - label: Capacidade máxima
+        - label: Professor responsável
+
+  - type: input
+    id: new-name
+    attributes:
+      label: Novo Nome (se aplicável)
+      description: Se estiver mudando o nome, qual será o novo nome?
+      placeholder: ex. Clube de Xadrez Avançado
+
+  - type: textarea
+    id: new-description
+    attributes:
+      label: Nova Descrição (se aplicável)
+      description: Se estiver mudando a descrição, forneça a nova descrição
+      placeholder: |
+        Exemplo: Esta atividade agora inclui competições mensais e preparação 
+        para torneios regionais.
+
+  - type: dropdown
+    id: new-type
+    attributes:
+      label: Nova Categoria (se aplicável)
+      description: Se estiver mudando a categoria, selecione a nova
+      options:
+        - Não alterar
+        - Esportes
+        - Artes
+        - Música
+        - Ciências
+        - Tecnologia
+        - Acadêmico
+        - Social
+        - Outro
+
+  - type: checkboxes
+    id: new-days
+    attributes:
+      label: Novos Dias da Semana (se aplicável)
+      description: Se estiver mudando os dias, selecione os novos dias
+      options:
+        - label: Segunda-feira
+        - label: Terça-feira
+        - label: Quarta-feira
+        - label: Quinta-feira
+        - label: Sexta-feira
+        - label: Sábado
+        - label: Domingo
+
+  - type: input
+    id: new-start-time
+    attributes:
+      label: Novo Horário de Início (se aplicável)
+      description: Se estiver mudando o horário de início (formato 24h, ex. 15:30)
+      placeholder: "15:30"
+
+  - type: input
+    id: new-end-time
+    attributes:
+      label: Novo Horário de Término (se aplicável)
+      description: Se estiver mudando o horário de término (formato 24h, ex. 17:00)
+      placeholder: "17:00"
+
+  - type: input
+    id: new-max-participants
+    attributes:
+      label: Nova Capacidade Máxima (se aplicável)
+      description: Se estiver mudando a capacidade, qual será o novo limite? (número inteiro)
+      placeholder: "25"
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Motivo da Alteração
+      description: Por que esta mudança é necessária?
+      placeholder: |
+        Exemplo: Precisamos aumentar a capacidade devido à alta demanda, 
+        ou mudar o horário para evitar conflitos com outras atividades.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Informações Adicionais
+      description: Há alguma outra informação importante sobre esta modificação?
+      placeholder: |
+        Exemplo: 
+        - Impacto em estudantes já inscritos
+        - Necessidade de comunicar mudanças
+        - Prazo para implementação
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Critérios de Aceitação
+        - [ ] Os campos especificados devem ser atualizados no banco de dados
+        - [ ] A atividade modificada deve aparecer corretamente na interface
+        - [ ] Estudantes já inscritos devem continuar inscritos (a menos que a capacidade seja reduzida)
+        - [ ] Se a capacidade for reduzida e exceder o número de inscritos, deve haver validação
+        - [ ] Os filtros devem continuar funcionando com os dados atualizados
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Contexto Técnico para o Agente
+        **Abordagem recomendada:**
+        1. Localizar a atividade no banco de dados usando o nome atual
+        2. Atualizar apenas os campos especificados
+        3. Manter validações existentes (Activity.java)
+        
+        **Arquivos a considerar:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/domain/entities/Activity.java` - Validações
+        - Criar migração ou script de atualização se necessário
+        - Considerar endpoint PUT/PATCH se não existir
+        
+        **Validações importantes:**
+        - Se mudar capacidade para menos que participantes atuais, retornar erro apropriado
+        - Validar formato de horários (HH:MM)
+        - Garantir que nome não seja duplicado se estiver mudando o nome
+        
+        **Exemplo de atualização:**
+        ```java
+        Activity activity = activityRepository.findByName(nomeAtual);
+        if (novoNome != null) activity.setName(novoNome);
+        if (novaDescricao != null) activity.setDescription(novaDescricao);
+        if (novaCapacidade != null) {
+            if (novaCapacidade < activity.getCurrentParticipantCount()) {
+                throw new IllegalArgumentException("Cannot reduce capacity below current participants");
+            }
+            activity.setMaxParticipants(novaCapacidade);
+        }
+        activityRepository.save(activity);
+        ```

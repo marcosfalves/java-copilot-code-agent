@@ -1,0 +1,149 @@
+name: 🎓 Adicionar Nova Atividade
+description: Solicitar a adição de uma nova atividade extracurricular ao sistema
+title: "[ATIVIDADE] "
+labels: ["enhancement", "activity"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Obrigado por solicitar uma nova atividade!
+        Preencha os detalhes abaixo para que possamos adicionar a atividade ao sistema.
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade
+      description: Qual é o nome da atividade?
+      placeholder: ex. Clube de Robótica, Aula de Piano, Time de Basquete
+    validations:
+      required: true
+
+  - type: textarea
+    id: activity-description
+    attributes:
+      label: Descrição da Atividade
+      description: Descreva o que os estudantes farão nesta atividade
+      placeholder: |
+        Exemplo: Os alunos aprenderão fundamentos de robótica, incluindo programação básica, 
+        montagem de componentes eletrônicos e resolução de problemas através de projetos práticos.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: activity-type
+    attributes:
+      label: Categoria da Atividade
+      description: Selecione a categoria que melhor descreve esta atividade
+      options:
+        - Esportes
+        - Artes
+        - Música
+        - Ciências
+        - Tecnologia
+        - Acadêmico
+        - Social
+        - Outro
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: schedule-days
+    attributes:
+      label: Dias da Semana
+      description: Selecione os dias em que a atividade acontecerá
+      options:
+        - label: Segunda-feira
+        - label: Terça-feira
+        - label: Quarta-feira
+        - label: Quinta-feira
+        - label: Sexta-feira
+        - label: Sábado
+        - label: Domingo
+
+  - type: input
+    id: start-time
+    attributes:
+      label: Horário de Início
+      description: Qual horário a atividade começa? (formato 24h, ex. 15:30)
+      placeholder: "15:30"
+    validations:
+      required: true
+
+  - type: input
+    id: end-time
+    attributes:
+      label: Horário de Término
+      description: Qual horário a atividade termina? (formato 24h, ex. 17:00)
+      placeholder: "17:00"
+    validations:
+      required: true
+
+  - type: input
+    id: max-participants
+    attributes:
+      label: Capacidade Máxima
+      description: Quantos estudantes podem participar? (número inteiro)
+      placeholder: "20"
+    validations:
+      required: true
+
+  - type: input
+    id: teacher-responsible
+    attributes:
+      label: Professor Responsável
+      description: Qual professor será responsável por esta atividade?
+      placeholder: ex. Prof. Silva, Prof. Chen
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Informações Adicionais
+      description: Há alguma outra informação importante sobre esta atividade?
+      placeholder: |
+        Exemplo: 
+        - Materiais necessários
+        - Pré-requisitos
+        - Observações especiais
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Critérios de Aceitação
+        - [ ] A atividade deve aparecer na lista de atividades do sistema
+        - [ ] Todos os campos obrigatórios devem estar preenchidos corretamente
+        - [ ] O horário deve estar no formato correto (HH:MM)
+        - [ ] A capacidade máxima deve ser um número positivo
+        - [ ] A atividade deve permitir inscrições de estudantes
+        - [ ] Os filtros de dia e horário devem funcionar com a nova atividade
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Contexto Técnico para o Agente
+        **Arquivos a modificar:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/infrastructure/migrations/` - Adicionar nova migração
+        - Seguir o padrão da classe `V001_InitialDatabaseSetup.java`
+        
+        **Validações necessárias:**
+        - Nome não pode ser nulo ou vazio
+        - Descrição não pode ser nula ou vazia
+        - Capacidade máxima deve ser > 0
+        - Horários devem estar no formato HH:MM
+        - Tipo deve ser um valor válido do enum ActivityType
+        
+        **Padrão de implementação:**
+        ```java
+        Activity activity = new Activity(
+            nome,
+            descricao,
+            schedule,
+            new ScheduleDetails(List.of(dias), LocalTime.parse(inicio), LocalTime.parse(fim)),
+            capacidadeMaxima,
+            ActivityType.fromLabel(categoria)
+        );
+        activityRepository.save(activity);
+        ```

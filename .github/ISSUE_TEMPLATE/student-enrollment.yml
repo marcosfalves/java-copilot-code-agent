@@ -1,0 +1,195 @@
+name: 👥 Gerenciar Inscrição de Estudante
+description: Resolver problemas ou fazer alterações relacionadas a inscrições de estudantes
+title: "[INSCRIÇÃO] "
+labels: ["enrollment", "student-management"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Gerenciar Inscrição de Estudante
+        Use este formulário para resolver problemas ou fazer alterações em inscrições.
+
+  - type: dropdown
+    id: request-type
+    attributes:
+      label: Tipo de Solicitação
+      description: O que você precisa fazer?
+      options:
+        - Inscrever estudante (quando sistema não permite)
+        - Cancelar inscrição
+        - Transferir estudante entre atividades
+        - Corrigir dados de inscrição
+        - Aumentar capacidade de atividade
+        - Remover limite de capacidade temporariamente
+        - Outro
+    validations:
+      required: true
+
+  - type: input
+    id: activity-name
+    attributes:
+      label: Nome da Atividade
+      description: Qual atividade está envolvida?
+      placeholder: ex. Chess Club, Art Club, Drama Club
+    validations:
+      required: true
+
+  - type: input
+    id: student-email
+    attributes:
+      label: Email do Estudante
+      description: Qual é o email do estudante? (se aplicável)
+      placeholder: ex. student@mergington.edu
+
+  - type: textarea
+    id: current-situation
+    attributes:
+      label: Situação Atual
+      description: Descreva a situação atual
+      placeholder: |
+        Exemplo: O estudante João Silva (joao.silva@mergington.edu) 
+        está tentando se inscrever no Chess Club, mas o sistema diz 
+        que não há vagas, mesmo que eu saiba que há apenas 15 de 20 vagas ocupadas.
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-outcome
+    attributes:
+      label: Resultado Desejado
+      description: O que deveria acontecer?
+      placeholder: |
+        Exemplo: O estudante deveria ser inscrito com sucesso no Chess Club.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Justificativa
+      description: Por que esta alteração é necessária?
+      placeholder: |
+        Exemplo: O estudante tem forte interesse em xadrez e há vagas disponíveis.
+        OU
+        O estudante precisa trocar de atividade por conflito de horário.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgência
+      description: Quão urgente é esta solicitação?
+      options:
+        - Urgente (prazo de hoje ou amanhã)
+        - Alta (prazo desta semana)
+        - Normal (pode esperar alguns dias)
+        - Baixa (sem pressa)
+    validations:
+      required: true
+
+  - type: textarea
+    id: error-details
+    attributes:
+      label: Detalhes do Erro (se aplicável)
+      description: Se está recebendo um erro, descreva ou cole a mensagem
+      placeholder: |
+        Exemplo: "Activity is at maximum capacity"
+        ou "Student is already registered for this activity"
+
+  - type: textarea
+    id: affected-students
+    attributes:
+      label: Estudantes Afetados
+      description: Liste todos os estudantes afetados (email ou nome)
+      placeholder: |
+        - joao.silva@mergington.edu
+        - maria.santos@mergington.edu
+        - pedro.costa@mergington.edu
+
+  - type: input
+    id: new-capacity
+    attributes:
+      label: Nova Capacidade (se aplicável)
+      description: Se precisa aumentar a capacidade, qual deveria ser o novo limite?
+      placeholder: "25"
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Informações Adicionais
+      description: Qualquer outra informação relevante
+      placeholder: |
+        Exemplo:
+        - Aprovação de administrador
+        - Circunstâncias especiais
+        - Prazo específico
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Critérios de Aceitação
+        - [ ] A operação solicitada deve ser concluída com sucesso
+        - [ ] Os dados devem estar corretos no sistema
+        - [ ] A interface deve refletir as mudanças
+        - [ ] Não deve haver efeitos colaterais indesejados
+        - [ ] Professor deve receber confirmação da alteração
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Contexto Técnico para o Agente
+        **Fluxo de inscrição:**
+        1. Validar autenticação do professor
+        2. Verificar se atividade existe
+        3. Validar email do estudante (Email.java)
+        4. Verificar capacidade (Activity.canAddParticipant())
+        5. Verificar duplicatas (Activity.isParticipantRegistered())
+        6. Adicionar participante (Activity.addParticipant())
+        
+        **Arquivos relevantes:**
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/domain/entities/Activity.java`
+          - Métodos: canAddParticipant(), addParticipant(), removeParticipant()
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/domain/valueobjects/Email.java`
+          - Validação de email
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/application/usecases/StudentRegistrationUseCase.java`
+          - Lógica de inscrição e cancelamento
+        - `src/main/java/com/mergingtonhigh/schoolmanagement/presentation/controllers/ActivityController.java`
+          - Endpoints: /activities/{name}/signup e /activities/{name}/unregister
+        
+        **Soluções comuns:**
+        
+        1. **Para aumentar capacidade:**
+        ```java
+        Activity activity = activityRepository.findByName(activityName);
+        activity.setMaxParticipants(newCapacity);
+        activityRepository.save(activity);
+        ```
+        
+        2. **Para forçar inscrição (temporariamente aumentar capacidade):**
+        ```java
+        Activity activity = activityRepository.findByName(activityName);
+        int currentMax = activity.getMaxParticipants();
+        activity.setMaxParticipants(currentMax + 1);
+        activity.addParticipant(new Email(studentEmail));
+        activityRepository.save(activity);
+        ```
+        
+        3. **Para transferir entre atividades:**
+        ```java
+        Activity fromActivity = activityRepository.findByName(fromActivityName);
+        Activity toActivity = activityRepository.findByName(toActivityName);
+        Email email = new Email(studentEmail);
+        fromActivity.removeParticipant(email);
+        toActivity.addParticipant(email);
+        activityRepository.save(fromActivity);
+        activityRepository.save(toActivity);
+        ```
+        
+        **Validações importantes:**
+        - Email deve estar no formato válido (@mergington.edu)
+        - Atividade deve existir
+        - Professor deve estar autenticado
+        - Respeitar regras de capacidade (ou documentar override)

@@ -1,0 +1,168 @@
+name: 🐛 Reportar Bug
+description: Reportar um problema ou erro no sistema
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Reportar um Bug
+        Obrigado por ajudar a melhorar o sistema! Descreva o problema encontrado.
+
+  - type: dropdown
+    id: bug-area
+    attributes:
+      label: Área do Sistema
+      description: Onde o problema está ocorrendo?
+      options:
+        - Interface Web (Frontend)
+        - Login/Autenticação
+        - Listagem de Atividades
+        - Inscrição de Estudantes
+        - Cancelamento de Inscrição
+        - Filtros de Busca
+        - Dados Exibidos
+        - Performance/Lentidão
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Descrição do Problema
+      description: Descreva claramente o que está acontecendo de errado
+      placeholder: |
+        Exemplo: Quando tento inscrever um estudante no Chess Club, 
+        recebo uma mensagem de erro mesmo havendo vagas disponíveis.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Passos para Reproduzir
+      description: Como podemos reproduzir este problema?
+      placeholder: |
+        1. Fazer login como professor
+        2. Clicar em "Inscrever-se" no Chess Club
+        3. Digitar email do estudante
+        4. Clicar em enviar
+        5. Ver mensagem de erro
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Comportamento Esperado
+      description: O que deveria acontecer?
+      placeholder: |
+        Exemplo: O estudante deveria ser inscrito com sucesso e 
+        aparecer na lista de participantes.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Comportamento Atual
+      description: O que está acontecendo de fato?
+      placeholder: |
+        Exemplo: Aparece mensagem "Activity is at maximum capacity" 
+        mas só há 5 de 20 vagas ocupadas.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequência
+      description: Com que frequência este problema ocorre?
+      options:
+        - Sempre (100% das vezes)
+        - Frequentemente (mais de 50% das vezes)
+        - Às vezes (menos de 50% das vezes)
+        - Raramente (ocorreu uma ou duas vezes)
+    validations:
+      required: true
+
+  - type: input
+    id: activity-affected
+    attributes:
+      label: Atividade Afetada (se aplicável)
+      description: Este problema afeta uma atividade específica?
+      placeholder: ex. Chess Club, Art Club
+
+  - type: textarea
+    id: error-message
+    attributes:
+      label: Mensagem de Erro (se houver)
+      description: Cole a mensagem de erro completa, se aplicável
+      placeholder: |
+        Exemplo: 
+        "Error: Activity is at maximum capacity"
+        ou
+        "500 Internal Server Error"
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Navegador (se problema de interface)
+      description: Qual navegador você está usando?
+      options:
+        - Não aplicável
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Outro
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexto Adicional
+      description: Qualquer outra informação relevante
+      placeholder: |
+        Exemplo:
+        - Screenshots ou capturas de tela
+        - Horário em que ocorreu
+        - Se afeta todos os usuários ou apenas alguns
+        - Mudanças recentes no sistema
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Critérios de Aceitação
+        - [ ] O bug deve ser reproduzido pela equipe de desenvolvimento
+        - [ ] A causa raiz deve ser identificada
+        - [ ] Uma correção deve ser implementada
+        - [ ] Testes devem ser executados para garantir que o bug foi resolvido
+        - [ ] A correção não deve quebrar funcionalidades existentes
+        - [ ] Documentação deve ser atualizada se necessário
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ### Dicas para o Agente de Codificação
+        **Processo de investigação:**
+        1. Reproduzir o bug seguindo os passos fornecidos
+        2. Verificar logs de erro no console do navegador (F12) ou logs do servidor
+        3. Identificar a camada onde o erro ocorre (domain, application, infrastructure, presentation)
+        4. Verificar validações nas entidades (Activity.java, Teacher.java)
+        5. Verificar lógica nos use cases (application/usecases/)
+        6. Verificar endpoints nos controllers (presentation/controllers/)
+        
+        **Áreas comuns de bugs:**
+        - Validações de email (Email.java)
+        - Verificação de capacidade (Activity.canAddParticipant())
+        - Autenticação de professor
+        - Formatação de horários (ScheduleDetails)
+        - Filtros de busca no frontend (app.js)
+        
+        **Após a correção:**
+        - Adicionar teste unitário para prevenir regressão
+        - Verificar se não introduziu novos bugs
+        - Testar manualmente o fluxo completo
