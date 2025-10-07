@@ -107,6 +107,27 @@ class ActivityTest {
         assertThrows(IllegalArgumentException.class, () -> activity.removeParticipant(studentEmail));
     }
 
+    @Test
+    void shouldDetermineMangaActivityAsArtsType() {
+        // Arrange
+        ScheduleDetails schedule = new ScheduleDetails(
+                List.of("Tuesday"),
+                LocalTime.of(19, 0),
+                LocalTime.of(20, 30));
+
+        // Act
+        Activity mangaActivity = new Activity(
+                "Manga Maniacs",
+                "Explore as histórias fantásticas dos personagens mais interessantes dos Mangás japoneses",
+                "Terças-feiras, 19:00 - 20:30",
+                schedule,
+                15,
+                null); // Pass null to test automatic type determination
+
+        // Assert
+        assertEquals(ActivityType.ARTS, mangaActivity.getType());
+    }
+
     private Activity createTestActivity() {
         ScheduleDetails schedule = new ScheduleDetails(
                 List.of("Monday"),

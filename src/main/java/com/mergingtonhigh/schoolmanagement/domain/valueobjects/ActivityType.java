@@ -52,8 +52,8 @@ public enum ActivityType {
         }
 
         // Arts keywords
-        if (containsAny(lowerName, "arte", "música", "teatro", "drama", "art", "music", "theater") ||
-                containsAny(lowerDesc, "criativo", "pintura", "creative", "paint")) {
+        if (containsAny(lowerName, "arte", "música", "teatro", "drama", "art", "music", "theater", "manga", "mangá") ||
+                containsAny(lowerDesc, "criativo", "pintura", "creative", "paint", "manga", "mangá")) {
             return ARTS;
         }
 
